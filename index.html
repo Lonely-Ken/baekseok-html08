@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MBTI 테스트</title>
+</head>
+<body>
+  <h1>MBTI 테스트</h1>
+
+  <div id="question"></div>
+  <button onclick="nextQuestion('E')">E</button>
+  <button onclick="nextQuestion('I')">I</button>
+
+  <script>
+    var questions = [
+      "당신은 주로 외향적인 편인가요?",
+      "당신은 사실보다 감정에 의존하는 편인가요?",
+      // 추가적인 질문들을 배열에 포함시킬 수 있습니다.
+    ];
+    
+    var answers = [];
+
+    var currentQuestionIndex = 0;
+
+    function nextQuestion(answer) {
+      answers.push(answer);
+      currentQuestionIndex++;
+
+      if (currentQuestionIndex < questions.length) {
+        document.getElementById("question").innerHTML = questions[currentQuestionIndex];
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      // 결과 계산 및 표시하는 로직을 여기에 작성하세요.
+      // answers 배열을 사용하여 MBTI 결과를 계산할 수 있습니다.
+      // 예를 들면, answers 배열에 저장된 답변을 토대로 E와 I 중 어느 쪽이 더 많은지 세어볼 수 있습니다.
+
+      // 결과를 표시하기 위해 아래와 같이 alert을 사용하겠습니다.
+      alert("MBTI 결과: " + answers.join(""));
+    }
+
+    // 첫 번째 질문을 화면에 표시합니다.
+    document.getElementById("question").innerHTML = questions[currentQuestionIndex];
+  </script>
+</body>
+</html>
