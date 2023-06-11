@@ -1,48 +1,196 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>MBTI 테스트</title>
-</head>
-<body>
-  <h1>MBTI 테스트</h1>
-
-  <div id="question"></div>
-  <button onclick="nextQuestion('E')">E</button>
-  <button onclick="nextQuestion('I')">I</button>
-
-  <script>
-    var questions = [
-      "당신은 주로 외향적인 편인가요?",
-      "당신은 사실보다 감정에 의존하는 편인가요?",
-      // 추가적인 질문들을 배열에 포함시킬 수 있습니다.
-    ];
-    
-    var answers = [];
-
-    var currentQuestionIndex = 0;
-
-    function nextQuestion(answer) {
-      answers.push(answer);
-      currentQuestionIndex++;
-
-      if (currentQuestionIndex < questions.length) {
-        document.getElementById("question").innerHTML = questions[currentQuestionIndex];
-      } else {
-        showResult();
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
       }
-    }
 
-    function showResult() {
-      // 결과 계산 및 표시하는 로직을 여기에 작성하세요.
-      // answers 배열을 사용하여 MBTI 결과를 계산할 수 있습니다.
-      // 예를 들면, answers 배열에 저장된 답변을 토대로 E와 I 중 어느 쪽이 더 많은지 세어볼 수 있습니다.
+      h1 {
+        margin-top: 50px;
+      }
 
-      // 결과를 표시하기 위해 아래와 같이 alert을 사용하겠습니다.
-      alert("MBTI 결과: " + answers.join(""));
-    }
+      .question {
+        margin-top: 50px;
+        font-size: 20px;
+      }
 
-    // 첫 번째 질문을 화면에 표시합니다.
-    document.getElementById("question").innerHTML = questions[currentQuestionIndex];
-  </script>
-</body>
+      .answer-buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+      }
+
+      .answer-button {
+        width: 200px;
+        height: 80px;
+        margin-bottom: 30px;
+        font-size: 16px;
+        background-color: white;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .answer-button:hover {
+        background-color: rgb(171, 171, 171);
+      }
+
+      .result {
+        margin-top: 5px;
+        font-size: 18px;
+        display: none
+      }
+    </style>
+  </head>
+  <body>
+    <h1>MBTI 학과테스트</h1>
+
+
+    <div id="inputContainer">
+        <h1>입학년도 생성기</h1>
+        <label for="nameInput">이름:</label>
+        <input type="text" id="nameInput">
+        <br>
+        <label for="ageInput">나이:</label>
+        <input type="number" id="ageInput">
+        <br>
+        <button id="teststart">TEST start</button>
+    </div>
+
+    <div id="ques_sec" style="display: none;">
+    
+        <div class="question" id="question"></div>
+    
+        <div class="answer-buttons">
+            <button class="answer-button">예</button>
+            <button class="answer-button">아니오</button>
+        </div>
+    </div>
+
+    <div id="resultContainer" style="display: none;">
+      <p id="resultText"></p>
+    </div>
+
+    <div class="result" id="result"></div>
+
+    <script>
+    const answerButtons = document.querySelectorAll(".answer-button");
+      answerButtons[0].addEventListener("click", () => nextQuestion(true));
+      answerButtons[1].addEventListener("click", () => nextQuestion(false));
+
+      const questions = [
+        "떨리는 OT 날! 당신은 처음 보는 친구들에게 먼저 다가가 말을 건다",
+        "오늘따라 우울한 당신! 집에 있기보단 나가서 친구들과 논다",
+        "애매하게 친한 친구들과의 모임.. 시간이 늦었지만 친구들과 우정이 우선!",
+        "첫 MT 날! '가서 술이나 많이 마셔야지 히힣!'",
+        "교수님께서 알려주셨지만 이해가 되지않는다.. 이해가 안되도 일단 외워본다",
+        "어느 날 친구가 일어나지 않을 엉뚱한 질문을 했다! 당신은 질문을 이해하지 못한다.",
+        "조별과제를 마치고 조장에게 듣고 싶은 칭찬은? '고생했어~ 근데 이부분은 고쳐야겠다'(네) / '고생많았겠다ㅠ 역시 너가 최고야!'(아니오)",
+        "친구가 시험을 망쳐 우울한 나머지 파마를 했다. 당신: '몇 점인데?'",
+        "친구가 깜빡하고 과제 제출기간을 놓쳐버렸다.. 당신: '일단 교수님께 연락해봐'",
+        "오늘은 수강신청 날! 당신은 올클을 위해 플랜A, 플랜B까지 모두 세운다.",
+        "친구들과 완벽한 여행을 가기위해 교통편부터 숙소, 맛집까지 세세하게 계획을 세운다",
+        "늦잠을 자버린 당신! 지각이라도 하기 위해 허겁지겁 준비한다",
+      ];
+
+      let currentQuestionIndex = 0;
+      let EI = 0;
+      let SN = 0;
+      let TF = 0;
+      let JP = 0;
+
+      showQuestion();
+
+      function nextQuestion(answer) {
+        if (currentQuestionIndex < 3) {
+          EI += answer ? 1 : -1;
+        } else if (currentQuestionIndex < 6) {
+          SN += answer ? 1 : -1;
+        } else if (currentQuestionIndex < 9) {
+          TF += answer ? 1 : -1;
+        } else {
+          JP += answer ? 1 : -1;
+        }
+
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < questions.length) {
+          showQuestion();
+        } else {
+          showResult();
+          resultContainer.style.display = "block";
+        }
+      }
+
+      function showQuestion() {
+        const questionElement = document.getElementById("question");
+        questionElement.textContent = questions[currentQuestionIndex];
+      }
+
+      const majors = {
+        ESTJ: "경영학과",
+        ESTP: "태권도학과",
+        ESFJ: "항공서비스학과",
+        ESFP: "실용음악학과",
+        ENTJ: "세무회계과",
+        ENTP: "시각디자인학과",
+        ENFJ: "작업치료학과",
+        ENFP: "특수교육과",
+        ISTJ: "경찰행정학과",
+        ISFJ: "간호학과",
+        ISTP: "소프트웨어학과",
+        ISFP: "시각디자인과",
+        INTJ: "법학과",
+        INTP: "AR/VR학과",
+        INFJ: "유아교육과",
+        INFP: "사회복지학과",
+      };
+
+      function showResult() {
+        const questionElement = document.getElementById("question");
+        const answerButtonsElement = document.querySelector(".answer-buttons");
+        const resultElement = document.getElementById("result");
+
+        ques_sec.style.display = "none";
+        resultElement.style.display = "block";
+
+        let result = "";
+
+        result += EI > 0 ? "E" : "I";
+        result += SN > 0 ? "S" : "N";
+        result += TF > 0 ? "T" : "F";
+        result += JP > 0 ? "J" : "P";
+
+        const major = majors[result];
+        resultElement.textContent = `결과: ${result}인 당신에게 ${major}(을)를 추천합니다!`;
+      }
+
+      //찬근님 코드
+
+      document.addEventListener("DOMContentLoaded", function() {
+            const button = document.getElementById("teststart");
+            const nameInput = document.getElementById("nameInput");
+            const ageInput = document.getElementById("ageInput");
+            const resultContainer = document.getElementById("resultContainer");
+            const resultText = document.getElementById("resultText");
+            const backButton = document.getElementById("backButton");
+            
+            button.addEventListener("click", function() {
+                const name = nameInput.value; // 입력된 이름 가져오기
+                const age = parseInt(ageInput.value); // 입력된 나이 가져오기
+                const currentYear = new Date().getFullYear(); // 현재 연도 가져오기
+                const admissionYear = currentYear - age + 20; // 나이를 기반으로 입학년도 계산
+                const randomNumber = Math.floor(Math.random() * 10000); // 4자리 랜덤 숫자 생성
+                const finalNumber = admissionYear.toString() + randomNumber.toString().padStart(4, '0'); // 입학년도와 랜덤 숫자 조합
+                
+                resultText.innerHTML = "이름: " + name + "<br>학번: " + finalNumber ;
+                inputContainer.style.display = "none";
+                ques_sec.style.display = "block";
+            });
+            
+        });
+    </script>
+  </body>
 </html>
