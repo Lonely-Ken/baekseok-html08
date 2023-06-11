@@ -42,6 +42,7 @@
         font-size: 18px;
         display: none
       }
+
     </style>
   </head>
   <body>
@@ -49,13 +50,16 @@
 
 
     <div id="inputContainer">
-        <h1>입학년도 생성기</h1>
+        <h1>학번 만들기</h1>
+
         <label for="nameInput">이름:</label>
         <input type="text" id="nameInput">
         <br>
+
         <label for="ageInput">나이:</label>
         <input type="number" id="ageInput">
         <br>
+
         <button id="teststart">TEST start</button>
     </div>
 
@@ -74,6 +78,8 @@
     </div>
 
     <div class="result" id="result"></div>
+
+    <button id="reset" style="display: none;">다시하기</button>
 
     <script>
     const answerButtons = document.querySelectorAll(".answer-button");
@@ -121,6 +127,7 @@
         } else {
           showResult();
           resultContainer.style.display = "block";
+          reset.style.display = "block";
         }
       }
 
@@ -167,8 +174,6 @@
         resultElement.textContent = `결과: ${result}인 당신에게 ${major}(을)를 추천합니다!`;
       }
 
-      //찬근님 코드
-
       document.addEventListener("DOMContentLoaded", function() {
             const button = document.getElementById("teststart");
             const nameInput = document.getElementById("nameInput");
@@ -178,12 +183,12 @@
             const backButton = document.getElementById("backButton");
             
             button.addEventListener("click", function() {
-                const name = nameInput.value; // 입력된 이름 가져오기
-                const age = parseInt(ageInput.value); // 입력된 나이 가져오기
-                const currentYear = new Date().getFullYear(); // 현재 연도 가져오기
-                const admissionYear = currentYear - age + 20; // 나이를 기반으로 입학년도 계산
-                const randomNumber = Math.floor(Math.random() * 10000); // 4자리 랜덤 숫자 생성
-                const finalNumber = admissionYear.toString() + randomNumber.toString().padStart(4, '0'); // 입학년도와 랜덤 숫자 조합
+                const name = nameInput.value; 
+                const age = parseInt(ageInput.value); 
+                const currentYear = new Date().getFullYear(); 
+                const admissionYear = currentYear - age + 20; 
+                const randomNumber = Math.floor(Math.random() * 10000);
+                const finalNumber = admissionYear.toString() + randomNumber.toString().padStart(4, '0'); 
                 
                 resultText.innerHTML = "이름: " + name + "<br>학번: " + finalNumber ;
                 inputContainer.style.display = "none";
